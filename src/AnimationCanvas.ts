@@ -5,18 +5,20 @@ export default class AnimationCanvas {
 	#ctx: CanvasRenderingContext2D;
 
 	#resizeHandler = () => {
-		console.log('resize');
 		this.#canvas.width = window.innerWidth;
 		this.#canvas.height = window.innerHeight;
+		this.#drawFrame();
 	};
 
 	constructor(width: number, height: number) {
 		this.#width = width;
 		this.#height = height;
-		this.#canvas = document.createElement('canvas');
+		this.#canvas = document.querySelector<HTMLCanvasElement>('#canvas')!;
 		this.#ctx = this.#canvas.getContext('2d')!;
 		this.#canvas.width = this.#width;
 		this.#canvas.height = this.#height;
+
+		this.#drawFrame();
 	}
 
 	startAnimation() {
@@ -25,5 +27,12 @@ export default class AnimationCanvas {
 
 	stopAnimation() {
 		window.removeEventListener('resize', this.#resizeHandler);
+	}
+
+	#drawFrame() {
+		this.#ctx.beginPath();
+		this.#ctx.moveTo(100, 100);
+		this.#ctx.lineTo(200, 200);
+		this.#ctx.stroke();
 	}
 }
