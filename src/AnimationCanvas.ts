@@ -39,9 +39,28 @@ export default class AnimationCanvas {
 
 	#drawFrame() {
 		this.#ctx.clearRect(0, 0, this.#width, this.#height);
+
+		this.#ctx.strokeStyle = '#333';
+		this.#ctx.lineWidth = 2;
+
 		this.#ctx.beginPath();
-		this.#ctx.moveTo(100 + this.#animationFrameId, 100);
-		this.#ctx.lineTo(200 + this.#animationFrameId / 2, 200);
+		this.#ctx.moveTo(100 + Math.sin(this.#animationFrameId / 20) * 50, 100 + Math.cos(this.#animationFrameId / 20) * 50);
+		this.#ctx.lineTo(
+			200 + Math.sin(this.#animationFrameId / 20 + 0.5) * 25,
+			200 + Math.sin(this.#animationFrameId / 20 + 0.5) * 25,
+		);
+		this.#ctx.stroke();
+
+		this.#ctx.strokeStyle = '#aaa';
+		this.#ctx.lineWidth = 1;
+
+		this.#ctx.beginPath();
+		this.#ctx.arc(100, 100, 50, 0, 2 * Math.PI);
+		this.#ctx.stroke();
+
+		this.#ctx.beginPath();
+		this.#ctx.moveTo(175, 175);
+		this.#ctx.lineTo(225, 225);
 		this.#ctx.stroke();
 	}
 }
