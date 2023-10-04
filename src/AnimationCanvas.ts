@@ -3,6 +3,7 @@ export default class AnimationCanvas {
 	#height: number;
 	#canvas: HTMLCanvasElement;
 	#ctx: CanvasRenderingContext2D;
+	#animationFrameId: number = 0;
 
 	#resizeHandler = () => {
 		this.#canvas.width = window.innerWidth;
@@ -23,16 +24,24 @@ export default class AnimationCanvas {
 
 	startAnimation() {
 		window.addEventListener('resize', this.#resizeHandler);
+		this.#animationFrameId = requestAnimationFrame(this.#animate.bind(this));
 	}
 
 	stopAnimation() {
 		window.removeEventListener('resize', this.#resizeHandler);
+		cancelAnimationFrame(this.#animationFrameId);
+	}
+
+	#animate() {
+		this.#drawFrame();
+		this.#animationFrameId = requestAnimationFrame(this.#animate.bind(this));
 	}
 
 	#drawFrame() {
+		this.#ctx.clearRect(0, 0, this.#width, this.#height);
 		this.#ctx.beginPath();
-		this.#ctx.moveTo(100, 100);
-		this.#ctx.lineTo(200, 200);
+		this.#ctx.moveTo(100 + this.#animationFrameId, 100);
+		this.#ctx.lineTo(200 + this.#animationFrameId / 2, 200);
 		this.#ctx.stroke();
 	}
 }
