@@ -2,9 +2,22 @@ import AnimationCanvas from './AnimationCanvas';
 
 export default class Controls {
 	#animationCanvas: AnimationCanvas;
+	#helpContainer: HTMLDivElement;
+	#isHelpTextVisible: boolean = true;
 
 	constructor(animationCanvas: AnimationCanvas) {
 		this.#animationCanvas = animationCanvas;
+		this.#helpContainer = document.querySelector<HTMLDivElement>('#helpContainer')!;
+	}
+
+	#showHelpText() {
+		this.#helpContainer.style.opacity = '1';
+		this.#isHelpTextVisible = true;
+	}
+
+	#hideHelpText() {
+		this.#helpContainer.style.opacity = '0';
+		this.#isHelpTextVisible = false;
 	}
 
 	listenToControlEvents() {
@@ -38,8 +51,16 @@ export default class Controls {
 			this.#animationCanvas.slowDownAnimation();
 		}
 
-		if (e.code === 'Numpad0') {
+		if (e.code === 'Numpad0' || e.code === 'Digit0') {
 			this.#animationCanvas.resetAnimationTime();
+		}
+
+		if (e.code === 'KeyH') {
+			if (this.#isHelpTextVisible) {
+				this.#hideHelpText();
+			} else {
+				this.#showHelpText();
+			}
 		}
 	}
 }
