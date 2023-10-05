@@ -17,7 +17,7 @@ export default class AnimationCanvas {
 	#animationTime: number = 0;
 	#animationSpeed: number = 1;
 	#cellSize: number = defaultCellSize;
-	#isAnimating: boolean = false;
+	#isAnimating: boolean = true;
 	#controls: Controls;
 
 	constructor(width: number, height: number) {
