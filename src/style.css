@@ -4,6 +4,39 @@
 	box-sizing: border-box;
 }
 
+#app {
+	overflow: hidden;
+}
+
 canvas {
 	display: block;
+}
+
+#helpContainer {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	background-color: rgba(200, 200, 200, 0.5);
+	top: 2rem;
+	left: 2rem;
+	padding: 1rem;
+	gap: 0.25rem;
+	border-radius: 1rem;
+	font-size: 1.4rem;
+	color: #555;
+	transition: all 0.5s ease-in-out;
+	user-select: none;
+}
+
+.helpRowContainer {
+	display: flex;
+	flex-direction: row-reverse;
+	gap: 1rem;
+}
+
+.helpKeyContainer {
+	display: flex;
+	width: 7rem;
+	font-weight: bold;
+	white-space: nowrap;
 }

@@ -1,10 +1,12 @@
+import Controls from './Controls';
+
 type Position = {
 	x: number;
 	y: number;
 };
 
 const { sin, cos } = Math;
-
+const defaultCellSize = 20;
 export default class AnimationCanvas {
 	#width: number;
 	#height: number;
@@ -12,15 +14,11 @@ export default class AnimationCanvas {
 	#ctx: CanvasRenderingContext2D;
 	#animationFrameId: number = 0;
 	#lastFrameTime: number = 0;
-	#cellSize: number = 10;
-
-	#resizeHandler = () => {
-		this.#width = window.innerWidth;
-		this.#height = window.innerHeight;
-		this.#canvas.width = window.innerWidth;
-		this.#canvas.height = window.innerHeight;
-		this.#drawFrame(0, 0);
-	};
+	#animationTime: number = 0;
+	#animationSpeed: number = 1;
+	#cellSize: number = defaultCellSize;
+	#isAnimating: boolean = true;
+	#controls: Controls;
 
 	constructor(width: number, height: number) {
 		this.#width = width;
@@ -29,25 +27,98 @@ export default class AnimationCanvas {
 		this.#ctx = this.#canvas.getContext('2d')!;
 		this.#canvas.width = this.#width;
 		this.#canvas.height = this.#height;
-
-		this.#drawFrame(0, 0);
+		this.#drawFrame(0);
+		this.#controls = new Controls(this);
+		this.#controls.listenToControlEvents();
 	}
 
-	startAnimation() {
-		window.addEventListener('resize', this.#resizeHandler);
+	start() {
+		window.addEventListener('resize', this.#resizeHandler.bind(this));
 		this.#animationFrameId = requestAnimationFrame(this.#animate.bind(this));
 	}
 
-	stopAnimation() {
-		window.removeEventListener('resize', this.#resizeHandler);
+	destroy() {
+		window.removeEventListener('resize', this.#resizeHandler.bind(this));
 		cancelAnimationFrame(this.#animationFrameId);
+		this.#clear();
+	}
+
+	#resizeHandler() {
+		this.#width = window.innerWidth;
+		this.#height = window.innerHeight;
+		this.#canvas.width = window.innerWidth;
+		this.#canvas.height = window.innerHeight;
+		this.#drawFrame(0);
+	}
+
+	startAnimation() {
+		this.#isAnimating = true;
+	}
+
+	pauseAnimation() {
+		this.#isAnimating = false;
+	}
+
+	pauseOrResumeAnimation() {
+		if (this.#isAnimating) {
+			this.pauseAnimation();
+		} else {
+			this.startAnimation();
+		}
+	}
+
+	rewindAnimation(time: number) {
+		this.#animationTime -= time * this.#animationSpeed;
+		this.#drawFrame(0);
+	}
+
+	fastForwardAnimation(time: number) {
+		this.#animationTime += time * this.#animationSpeed;
+		this.#drawFrame(0);
+	}
+
+	resetAnimation() {
+		this.#animationTime = 0;
+		this.#drawFrame(0);
+		this.#animationSpeed = 1;
+		this.#cellSize = defaultCellSize;
+	}
+
+	resetAnimationTime() {
+		this.#animationTime = 0;
+		this.#drawFrame(0);
+	}
+
+	speedUpAnimation() {
+		this.#animationSpeed *= 2;
+	}
+
+	slowDownAnimation() {
+		this.#animationSpeed *= 0.5;
+	}
+
+	decreaseCellSize() {
+		if (this.#cellSize > 1) this.#cellSize -= 1;
+		this.#drawFrame(0);
+	}
+
+	increaseCellSize() {
+		this.#cellSize += 1;
+		this.#drawFrame(0);
 	}
 
 	#animate(time: number) {
 		const delta = time - this.#lastFrameTime;
-		this.#drawFrame(delta, time);
-		this.#lastFrameTime = time;
+		this.#lastFrameTime += delta;
+		if (this.#isAnimating) {
+			this.#animationTime += delta * this.#animationSpeed;
+			this.#drawFrame(delta * this.#animationSpeed);
+		}
 		this.#animationFrameId = requestAnimationFrame(this.#animate.bind(this));
+	}
+
+	#clear() {
+		this.#ctx.clearRect(0, 0, this.#width, this.#height);
 	}
 
 	#drawLine(from: Position, to: Position) {
@@ -63,8 +134,8 @@ export default class AnimationCanvas {
 		this.#ctx.stroke();
 	}
 
-	#drawFrame(delta: number, time: number) {
-		this.#ctx.clearRect(0, 0, this.#width, this.#height);
+	#drawFrame(delta: number) {
+		this.#clear();
 
 		this.#ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
 		for (let x = 0; x < this.#width; x += this.#cellSize) {
@@ -72,8 +143,8 @@ export default class AnimationCanvas {
 				this.#drawLine(
 					{ x, y },
 					{
-						x: x + sin(x * time * 0.000002) * this.#cellSize,
-						y: y + cos(y * time * 0.000002) * this.#cellSize,
+						x: x + sin(x * this.#animationTime * 0.000002) * this.#cellSize,
+						y: y + cos(y * this.#animationTime * 0.000002) * this.#cellSize,
 					},
 				);
 			}
