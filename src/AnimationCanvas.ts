@@ -1,14 +1,25 @@
+type Position = {
+	x: number;
+	y: number;
+};
+
+const { sin, cos } = Math;
+
 export default class AnimationCanvas {
 	#width: number;
 	#height: number;
 	#canvas: HTMLCanvasElement;
 	#ctx: CanvasRenderingContext2D;
 	#animationFrameId: number = 0;
+	#lastFrameTime: number = 0;
+	#cellSize: number = 10;
 
 	#resizeHandler = () => {
+		this.#width = window.innerWidth;
+		this.#height = window.innerHeight;
 		this.#canvas.width = window.innerWidth;
 		this.#canvas.height = window.innerHeight;
-		this.#drawFrame();
+		this.#drawFrame(0, 0);
 	};
 
 	constructor(width: number, height: number) {
@@ -19,7 +30,7 @@ export default class AnimationCanvas {
 		this.#canvas.width = this.#width;
 		this.#canvas.height = this.#height;
 
-		this.#drawFrame();
+		this.#drawFrame(0, 0);
 	}
 
 	startAnimation() {
@@ -32,35 +43,40 @@ export default class AnimationCanvas {
 		cancelAnimationFrame(this.#animationFrameId);
 	}
 
-	#animate() {
-		this.#drawFrame();
+	#animate(time: number) {
+		const delta = time - this.#lastFrameTime;
+		this.#drawFrame(delta, time);
+		this.#lastFrameTime = time;
 		this.#animationFrameId = requestAnimationFrame(this.#animate.bind(this));
 	}
 
-	#drawFrame() {
+	#drawLine(from: Position, to: Position) {
+		this.#ctx.beginPath();
+		this.#ctx.moveTo(from.x, from.y);
+		this.#ctx.lineTo(to.x, to.y);
+		this.#ctx.stroke();
+	}
+
+	#drawCircle(position: Position, radius: number) {
+		this.#ctx.beginPath();
+		this.#ctx.arc(position.x, position.y, radius, 0, 2 * Math.PI);
+		this.#ctx.stroke();
+	}
+
+	#drawFrame(delta: number, time: number) {
 		this.#ctx.clearRect(0, 0, this.#width, this.#height);
 
-		this.#ctx.strokeStyle = '#333';
-		this.#ctx.lineWidth = 2;
-
-		this.#ctx.beginPath();
-		this.#ctx.moveTo(100 + Math.sin(this.#animationFrameId / 20) * 50, 100 + Math.cos(this.#animationFrameId / 20) * 50);
-		this.#ctx.lineTo(
-			200 + Math.sin(this.#animationFrameId / 20 + 0.5) * 25,
-			200 + Math.sin(this.#animationFrameId / 20 + 0.5) * 25,
-		);
-		this.#ctx.stroke();
-
-		this.#ctx.strokeStyle = '#aaa';
-		this.#ctx.lineWidth = 1;
-
-		this.#ctx.beginPath();
-		this.#ctx.arc(100, 100, 50, 0, 2 * Math.PI);
-		this.#ctx.stroke();
-
-		this.#ctx.beginPath();
-		this.#ctx.moveTo(175, 175);
-		this.#ctx.lineTo(225, 225);
-		this.#ctx.stroke();
+		this.#ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+		for (let x = 0; x < this.#width; x += this.#cellSize) {
+			for (let y = 0; y < this.#height; y += this.#cellSize) {
+				this.#drawLine(
+					{ x, y },
+					{
+						x: x + sin(x * time * 0.000002) * this.#cellSize,
+						y: y + cos(y * time * 0.000002) * this.#cellSize,
+					},
+				);
+			}
+		}
 	}
 }
