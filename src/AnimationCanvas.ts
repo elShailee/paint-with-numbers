@@ -72,8 +72,8 @@ export default class AnimationCanvas {
 				this.#drawLine(
 					{ x, y },
 					{
-						x: x + sin(x * 0.02 * time * 0.0001) * 10,
-						y: y + cos(y * 0.02 * time * 0.0001) * 10,
+						x: x + sin(x * time * 0.000002) * this.#cellSize,
+						y: y + cos(y * time * 0.000002) * this.#cellSize,
 					},
 				);
 			}
