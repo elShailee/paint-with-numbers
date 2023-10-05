@@ -3,17 +3,23 @@ type Position = {
 	y: number;
 };
 
+const { sin, cos } = Math;
+
 export default class AnimationCanvas {
 	#width: number;
 	#height: number;
 	#canvas: HTMLCanvasElement;
 	#ctx: CanvasRenderingContext2D;
 	#animationFrameId: number = 0;
+	#lastFrameTime: number = 0;
+	#cellSize: number = 10;
 
 	#resizeHandler = () => {
+		this.#width = window.innerWidth;
+		this.#height = window.innerHeight;
 		this.#canvas.width = window.innerWidth;
 		this.#canvas.height = window.innerHeight;
-		this.#drawFrame();
+		this.#drawFrame(0, 0);
 	};
 
 	constructor(width: number, height: number) {
@@ -24,7 +30,7 @@ export default class AnimationCanvas {
 		this.#canvas.width = this.#width;
 		this.#canvas.height = this.#height;
 
-		this.#drawFrame();
+		this.#drawFrame(0, 0);
 	}
 
 	startAnimation() {
@@ -37,8 +43,10 @@ export default class AnimationCanvas {
 		cancelAnimationFrame(this.#animationFrameId);
 	}
 
-	#animate() {
-		this.#drawFrame();
+	#animate(time: number) {
+		const delta = time - this.#lastFrameTime;
+		this.#drawFrame(delta, time);
+		this.#lastFrameTime = time;
 		this.#animationFrameId = requestAnimationFrame(this.#animate.bind(this));
 	}
 
@@ -55,25 +63,20 @@ export default class AnimationCanvas {
 		this.#ctx.stroke();
 	}
 
-	#drawFrame() {
+	#drawFrame(delta: number, time: number) {
 		this.#ctx.clearRect(0, 0, this.#width, this.#height);
 
-		this.#ctx.strokeStyle = '#aaa';
-		this.#ctx.lineWidth = 1;
-		this.#drawCircle({ x: 100, y: 100 }, 50);
-		this.#drawLine({ x: 175, y: 175 }, { x: 225, y: 225 });
-
-		this.#ctx.strokeStyle = '#333';
-		this.#ctx.lineWidth = 2;
-		this.#drawLine(
-			{
-				x: 100 + Math.sin(this.#animationFrameId * 0.05) * 50,
-				y: 100 + Math.cos(this.#animationFrameId * 0.05) * 50,
-			},
-			{
-				x: 200 + Math.sin(this.#animationFrameId * 0.05 + 0.5) * 25,
-				y: 200 + Math.sin(this.#animationFrameId * 0.05 + 0.5) * 25,
-			},
-		);
+		this.#ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+		for (let x = 0; x < this.#width; x += this.#cellSize) {
+			for (let y = 0; y < this.#height; y += this.#cellSize) {
+				this.#drawLine(
+					{ x, y },
+					{
+						x: x + sin(x * 0.02 * time * 0.0001) * 10,
+						y: y + cos(y * 0.02 * time * 0.0001) * 10,
+					},
+				);
+			}
+		}
 	}
 }
