@@ -15,6 +15,7 @@ export default class AnimationCanvas {
 	#animationFrameId: number = 0;
 	#lastFrameTime: number = 0;
 	#animationTime: number = 0;
+	#animationSpeed: number = 1;
 	#cellSize: number = 20;
 	#isAnimating: boolean = false;
 	#controls: Controls;
@@ -66,12 +67,41 @@ export default class AnimationCanvas {
 		}
 	}
 
+	rewindAnimation(time: number) {
+		this.#animationTime -= time;
+		this.#drawFrame(0);
+	}
+
+	fastForwardAnimation(time: number) {
+		this.#animationTime += time;
+		this.#drawFrame(0);
+	}
+
+	resetAnimation() {
+		this.#animationTime = 0;
+		this.#drawFrame(0);
+		this.#animationSpeed = 1;
+	}
+
+	resetAnimationTime() {
+		this.#animationTime = 0;
+		this.#drawFrame(0);
+	}
+
+	speedUpAnimation() {
+		this.#animationSpeed *= 2;
+	}
+
+	slowDownAnimation() {
+		this.#animationSpeed *= 0.5;
+	}
+
 	#animate(time: number) {
 		const delta = time - this.#lastFrameTime;
 		this.#lastFrameTime += delta;
 		if (this.#isAnimating) {
-			this.#animationTime += delta;
-			this.#drawFrame(delta);
+			this.#animationTime += delta * this.#animationSpeed;
+			this.#drawFrame(delta * this.#animationSpeed);
 		}
 		this.#animationFrameId = requestAnimationFrame(this.#animate.bind(this));
 	}
