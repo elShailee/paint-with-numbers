@@ -3,7 +3,7 @@ import './style.css';
 
 const helpRowsData = [
 	['h', 'show/hide help'],
-	['f11', 'toggle fullscreen'],
+	['f', 'toggle fullscreen'],
 	['space', 'pause/resume animation'],
 	['left arrow', 'rewind animation'],
 	['right arrow', 'fast forward animation'],
@@ -11,6 +11,8 @@ const helpRowsData = [
 	['+', 'speed up animation'],
 	['-', 'slow down animation'],
 	['0', 'reset animation time'],
+	['z', 'decrease cell size (cause lag)'],
+	['x', 'increase cell size'],
 ];
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `

@@ -6,7 +6,7 @@ type Position = {
 };
 
 const { sin, cos } = Math;
-
+const defaultCellSize = 20;
 export default class AnimationCanvas {
 	#width: number;
 	#height: number;
@@ -16,7 +16,7 @@ export default class AnimationCanvas {
 	#lastFrameTime: number = 0;
 	#animationTime: number = 0;
 	#animationSpeed: number = 1;
-	#cellSize: number = 20;
+	#cellSize: number = defaultCellSize;
 	#isAnimating: boolean = false;
 	#controls: Controls;
 
@@ -68,12 +68,12 @@ export default class AnimationCanvas {
 	}
 
 	rewindAnimation(time: number) {
-		this.#animationTime -= time;
+		this.#animationTime -= time * this.#animationSpeed;
 		this.#drawFrame(0);
 	}
 
 	fastForwardAnimation(time: number) {
-		this.#animationTime += time;
+		this.#animationTime += time * this.#animationSpeed;
 		this.#drawFrame(0);
 	}
 
@@ -81,6 +81,7 @@ export default class AnimationCanvas {
 		this.#animationTime = 0;
 		this.#drawFrame(0);
 		this.#animationSpeed = 1;
+		this.#cellSize = defaultCellSize;
 	}
 
 	resetAnimationTime() {
@@ -94,6 +95,16 @@ export default class AnimationCanvas {
 
 	slowDownAnimation() {
 		this.#animationSpeed *= 0.5;
+	}
+
+	decreaseCellSize() {
+		if (this.#cellSize > 1) this.#cellSize -= 1;
+		this.#drawFrame(0);
+	}
+
+	increaseCellSize() {
+		this.#cellSize += 1;
+		this.#drawFrame(0);
 	}
 
 	#animate(time: number) {

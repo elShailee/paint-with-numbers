@@ -62,5 +62,21 @@ export default class Controls {
 				this.#showHelpText();
 			}
 		}
+
+		if (e.code === 'KeyZ') {
+			this.#animationCanvas.decreaseCellSize();
+		}
+
+		if (e.code === 'KeyX') {
+			this.#animationCanvas.increaseCellSize();
+		}
+
+		if (e.code === 'KeyF') {
+			if (document.fullscreenElement) {
+				document.exitFullscreen();
+			} else {
+				document.documentElement.requestFullscreen();
+			}
+		}
 	}
 }

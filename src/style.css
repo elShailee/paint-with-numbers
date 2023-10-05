@@ -25,6 +25,7 @@ canvas {
 	font-size: 1.4rem;
 	color: #555;
 	transition: all 0.5s ease-in-out;
+	user-select: none;
 }
 
 .helpRowContainer {
