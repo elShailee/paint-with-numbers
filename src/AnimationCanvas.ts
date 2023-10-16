@@ -1,12 +1,16 @@
+import { drawCircledPixels } from './Animations/CircledPixels';
 import { drawLineVectorField } from './Animations/LineVectorField';
 import Controls from './Controls';
 
 const defaultCellSize = 20;
+
+const animations = [drawLineVectorField, drawCircledPixels];
 export default class AnimationCanvas {
 	_width: number;
 	_height: number;
 	_canvas: HTMLCanvasElement;
 	_ctx: CanvasRenderingContext2D;
+	_animationIndex: number = 0;
 	_animationFrameId: number = 0;
 	_lastFrameTime: number = 0;
 	_animationTime: number = 0;
@@ -109,6 +113,16 @@ export default class AnimationCanvas {
 		this._drawFrame(0);
 	}
 
+	nextAnimation() {
+		this._animationIndex = (this._animationIndex + 1) % animations.length;
+		this._drawFrame(0);
+	}
+
+	previousAnimation() {
+		this._animationIndex = (this._animationIndex - 1 + animations.length) % animations.length;
+		this._drawFrame(0);
+	}
+
 	_animate(time: number) {
 		const delta = time - this._lastFrameTime;
 		this._lastFrameTime += delta;
@@ -126,6 +140,6 @@ export default class AnimationCanvas {
 	_drawFrame(delta: number) {
 		this._clear();
 
-		drawLineVectorField(this);
+		animations[this._animationIndex](this);
 	}
 }

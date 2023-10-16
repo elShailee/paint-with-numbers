@@ -39,6 +39,14 @@ export default class Controls {
 			this._animationCanvas.fastForwardAnimation(500);
 		}
 
+		if (e.code === 'ArrowUp') {
+			this._animationCanvas.nextAnimation();
+		}
+
+		if (e.code === 'ArrowDown') {
+			this._animationCanvas.previousAnimation();
+		}
+
 		if (e.code === 'Escape') {
 			this._animationCanvas.resetAnimation();
 		}

@@ -1,10 +1,10 @@
 import AnimationCanvas from '../AnimationCanvas';
 import { getLineaRainbowColor, getRadialRainbowColor } from '../Utils/colors';
-import { drawLine } from '../Utils/draw';
+import { drawCircle } from '../Utils/draw';
 
-const { sin, cos } = Math;
+const { sin, cos, abs } = Math;
 
-export function drawLineVectorField(canvas: AnimationCanvas) {
+export function drawCircledPixels(canvas: AnimationCanvas) {
 	for (let x = 0; x < canvas._width; x += canvas._cellSize) {
 		for (let y = 0; y < canvas._height; y += canvas._cellSize) {
 			switch (canvas._colorsCounter % 3) {
@@ -19,13 +19,14 @@ export function drawLineVectorField(canvas: AnimationCanvas) {
 					break;
 			}
 
-			drawLine(
+			drawCircle(
 				canvas._ctx,
 				{ x, y },
-				{
-					x: x + sin(x * canvas._animationTime * 0.000002) * canvas._cellSize,
-					y: y + cos(y * canvas._animationTime * 0.000002) * canvas._cellSize,
-				},
+
+				abs(
+					sin(x * canvas._animationTime * 0.000002) * canvas._cellSize +
+						cos(y * canvas._animationTime * 0.000002) * canvas._cellSize,
+				) * 3,
 			);
 		}
 	}
