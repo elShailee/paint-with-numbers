@@ -1,74 +1,74 @@
 import AnimationCanvas from './AnimationCanvas';
 
 export default class Controls {
-	#animationCanvas: AnimationCanvas;
-	#helpContainer: HTMLDivElement;
-	#isHelpTextVisible: boolean = true;
+	_animationCanvas: AnimationCanvas;
+	_helpContainer: HTMLDivElement;
+	_isHelpTextVisible: boolean = true;
 
 	constructor(animationCanvas: AnimationCanvas) {
-		this.#animationCanvas = animationCanvas;
-		this.#helpContainer = document.querySelector<HTMLDivElement>('#helpContainer')!;
+		this._animationCanvas = animationCanvas;
+		this._helpContainer = document.querySelector<HTMLDivElement>('#helpContainer')!;
 	}
 
-	#showHelpText() {
-		this.#helpContainer.style.opacity = '1';
-		this.#isHelpTextVisible = true;
+	_showHelpText() {
+		this._helpContainer.style.opacity = '1';
+		this._isHelpTextVisible = true;
 	}
 
-	#hideHelpText() {
-		this.#helpContainer.style.opacity = '0';
-		this.#isHelpTextVisible = false;
+	_hideHelpText() {
+		this._helpContainer.style.opacity = '0';
+		this._isHelpTextVisible = false;
 	}
 
 	listenToControlEvents() {
 		document.addEventListener('keydown', e => {
-			this.#handleKeyboardControlEvents(e);
+			this._handleKeyboardControlEvents(e);
 		});
 	}
 
-	#handleKeyboardControlEvents(e: KeyboardEvent) {
+	_handleKeyboardControlEvents(e: KeyboardEvent) {
 		if (e.code === 'Space') {
-			this.#animationCanvas.pauseOrResumeAnimation();
+			this._animationCanvas.pauseOrResumeAnimation();
 		}
 
 		if (e.code === 'ArrowLeft') {
-			this.#animationCanvas.rewindAnimation(500);
+			this._animationCanvas.rewindAnimation(500);
 		}
 
 		if (e.code === 'ArrowRight') {
-			this.#animationCanvas.fastForwardAnimation(500);
+			this._animationCanvas.fastForwardAnimation(500);
 		}
 
 		if (e.code === 'Escape') {
-			this.#animationCanvas.resetAnimation();
+			this._animationCanvas.resetAnimation();
 		}
 
 		if (e.code === 'NumpadAdd') {
-			this.#animationCanvas.speedUpAnimation();
+			this._animationCanvas.speedUpAnimation();
 		}
 
 		if (e.code === 'NumpadSubtract') {
-			this.#animationCanvas.slowDownAnimation();
+			this._animationCanvas.slowDownAnimation();
 		}
 
 		if (e.code === 'Numpad0' || e.code === 'Digit0') {
-			this.#animationCanvas.resetAnimationTime();
+			this._animationCanvas.resetAnimationTime();
 		}
 
 		if (e.code === 'KeyH') {
-			if (this.#isHelpTextVisible) {
-				this.#hideHelpText();
+			if (this._isHelpTextVisible) {
+				this._hideHelpText();
 			} else {
-				this.#showHelpText();
+				this._showHelpText();
 			}
 		}
 
 		if (e.code === 'KeyZ') {
-			this.#animationCanvas.decreaseCellSize();
+			this._animationCanvas.decreaseCellSize();
 		}
 
 		if (e.code === 'KeyX') {
-			this.#animationCanvas.increaseCellSize();
+			this._animationCanvas.increaseCellSize();
 		}
 
 		if (e.code === 'KeyF') {
@@ -80,7 +80,7 @@ export default class Controls {
 		}
 
 		if (e.code === 'KeyC') {
-			this.#animationCanvas.toggleColors();
+			this._animationCanvas.toggleColors();
 		}
 	}
 }
