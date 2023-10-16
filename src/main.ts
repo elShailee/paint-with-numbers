@@ -10,9 +10,10 @@ const helpRowsData = [
 	['escape', 'reset animation'],
 	['+', 'speed up animation'],
 	['-', 'slow down animation'],
-	['0', 'reset animation time'],
+	['0', 'restart animation'],
 	['z', 'decrease cell size (cause lag)'],
 	['x', 'increase cell size'],
+	['c', 'toggle colors'],
 ];
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `

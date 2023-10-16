@@ -78,5 +78,9 @@ export default class Controls {
 				document.documentElement.requestFullscreen();
 			}
 		}
+
+		if (e.code === 'KeyC') {
+			this.#animationCanvas.toggleColors();
+		}
 	}
 }

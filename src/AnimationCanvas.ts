@@ -1,9 +1,5 @@
 import Controls from './Controls';
-
-type Position = {
-	x: number;
-	y: number;
-};
+import { drawLine } from './Utils/draw';
 
 const { sin, cos } = Math;
 const defaultCellSize = 20;
@@ -18,6 +14,7 @@ export default class AnimationCanvas {
 	#animationSpeed: number = 1;
 	#cellSize: number = defaultCellSize;
 	#isAnimating: boolean = true;
+	#colorsCounter: number = 5;
 	#controls: Controls;
 
 	constructor(width: number, height: number) {
@@ -107,6 +104,11 @@ export default class AnimationCanvas {
 		this.#drawFrame(0);
 	}
 
+	toggleColors() {
+		this.#colorsCounter = (this.#colorsCounter + 1) % 10;
+		this.#drawFrame(0);
+	}
+
 	#animate(time: number) {
 		const delta = time - this.#lastFrameTime;
 		this.#lastFrameTime += delta;
@@ -121,26 +123,16 @@ export default class AnimationCanvas {
 		this.#ctx.clearRect(0, 0, this.#width, this.#height);
 	}
 
-	#drawLine(from: Position, to: Position) {
-		this.#ctx.beginPath();
-		this.#ctx.moveTo(from.x, from.y);
-		this.#ctx.lineTo(to.x, to.y);
-		this.#ctx.stroke();
-	}
-
-	#drawCircle(position: Position, radius: number) {
-		this.#ctx.beginPath();
-		this.#ctx.arc(position.x, position.y, radius, 0, 2 * Math.PI);
-		this.#ctx.stroke();
-	}
-
 	#drawFrame(delta: number) {
 		this.#clear();
 
-		this.#ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
 		for (let x = 0; x < this.#width; x += this.#cellSize) {
 			for (let y = 0; y < this.#height; y += this.#cellSize) {
-				this.#drawLine(
+				this.#ctx.strokeStyle = this.#colorsCounter
+					? `hsl(${(360 * this.#colorsCounter * (x + y)) / (this.#width + this.#height)}, 90%, 50%)`
+					: 'rgba(0, 0, 0, 0.5)';
+				drawLine(
+					this.#ctx,
 					{ x, y },
 					{
 						x: x + sin(x * this.#animationTime * 0.000002) * this.#cellSize,
