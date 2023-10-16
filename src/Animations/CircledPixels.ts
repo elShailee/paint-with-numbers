@@ -5,8 +5,8 @@ import { drawCircle } from '../Utils/draw';
 const { sin, cos, abs } = Math;
 
 export function drawCircledPixels(canvas: AnimationCanvas) {
-	for (let x = 0; x < canvas._width; x += canvas._cellSize) {
-		for (let y = 0; y < canvas._height; y += canvas._cellSize) {
+	for (let x = 0; x < canvas._width; x += canvas._cellSize * 2) {
+		for (let y = 0; y < canvas._height; y += canvas._cellSize * 2) {
 			switch (canvas._colorsCounter % 3) {
 				case 0:
 					canvas._ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
@@ -24,8 +24,8 @@ export function drawCircledPixels(canvas: AnimationCanvas) {
 				{ x, y },
 
 				abs(
-					sin(x * canvas._animationTime * 0.000002) * canvas._cellSize +
-						cos(y * canvas._animationTime * 0.000002) * canvas._cellSize,
+					sin(x * canvas._animationTime * 0.000001) * canvas._cellSize +
+						cos(y * canvas._animationTime * 0.000001) * canvas._cellSize,
 				) * 3,
 			);
 		}
