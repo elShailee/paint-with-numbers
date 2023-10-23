@@ -1,2 +1,2 @@
-export as namespace html;
-export = html;
+declare function main(): void;
+export default main;
