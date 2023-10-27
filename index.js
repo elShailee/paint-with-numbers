@@ -1,6 +1,3 @@
-'use strict';
+import { init } from './src/init';
 
-// module.exports = require('/src/main.ts');
-export default () => {
-	console.log('Most basic packaging worked!');
-};
+export default init;
