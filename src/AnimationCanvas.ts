@@ -137,6 +137,7 @@ export default class AnimationCanvas {
 		this._ctx.clearRect(0, 0, this._width, this._height);
 	}
 
+	// @ts-ignore
 	_drawFrame(delta: number) {
 		this._clear();
 
