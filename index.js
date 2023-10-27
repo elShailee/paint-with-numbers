@@ -1,3 +1,2 @@
-import { init } from './src/init';
-
-export default init;
+import html from './index.html';
+export default html;
