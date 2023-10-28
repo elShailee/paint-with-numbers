@@ -1,2 +1,2 @@
-import html from './index.html';
-export default html;
+import App from './src/App';
+export default App;

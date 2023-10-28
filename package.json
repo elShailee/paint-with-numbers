@@ -1,7 +1,7 @@
 {
 	"name": "paint-with-numbers",
 	"private": true,
-	"version": "1.6.0",
+	"version": "1.0.0",
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
@@ -12,6 +12,9 @@
 		"major": "npm version --no-git-tag-version major"
 	},
 	"devDependencies": {
+		"@types/react": "^18.2.33",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
 		"typescript": "^5.0.2",
 		"vite": "^4.4.5"
 	}
