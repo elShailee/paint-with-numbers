@@ -42,8 +42,8 @@ export default function App() {
 	return (
 		<div style={{ backgroundColor: 'white', width: '100vw', height: '100vh' }}>
 			<div id='helpContainer' ref={controlsContainerRef}>
-				{helpRowsData.map(row => (
-					<div className='helpRowContainer'>
+				{helpRowsData.map((row, index) => (
+					<div className='helpRowContainer' key={index}>
 						<div className='helpKeyContainer'>{row[0]}</div>
 						<div>{row[1]}</div>
 					</div>
