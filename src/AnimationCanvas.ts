@@ -20,15 +20,23 @@ export default class AnimationCanvas {
 	_colorsCounter: number = 0;
 	_controls: Controls;
 
-	constructor(width: number, height: number) {
-		this._width = width;
-		this._height = height;
-		this._canvas = document.querySelector<HTMLCanvasElement>('#canvas')!;
+	constructor({
+		isEnvDev,
+		canvas,
+		controlsContainer,
+	}: {
+		isEnvDev: boolean;
+		canvas?: HTMLCanvasElement;
+		controlsContainer?: HTMLDivElement;
+	}) {
+		this._width = window.innerWidth;
+		this._height = window.innerHeight;
+		this._canvas = isEnvDev ? document.querySelector<HTMLCanvasElement>('#canvas')! : canvas!;
 		this._ctx = this._canvas.getContext('2d')!;
 		this._canvas.width = this._width;
 		this._canvas.height = this._height;
 		this._drawFrame(0);
-		this._controls = new Controls(this);
+		this._controls = new Controls(this, isEnvDev, controlsContainer);
 		this._controls.listenToControlEvents();
 	}
 

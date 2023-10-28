@@ -5,9 +5,9 @@ export default class Controls {
 	_helpContainer: HTMLDivElement;
 	_isHelpTextVisible: boolean = true;
 
-	constructor(animationCanvas: AnimationCanvas) {
+	constructor(animationCanvas: AnimationCanvas, isEnvDev: boolean, controlsContainer?: HTMLDivElement) {
 		this._animationCanvas = animationCanvas;
-		this._helpContainer = document.querySelector<HTMLDivElement>('#helpContainer')!;
+		this._helpContainer = isEnvDev ? document.querySelector<HTMLDivElement>('#helpContainer')! : controlsContainer!;
 	}
 
 	_showHelpText() {
