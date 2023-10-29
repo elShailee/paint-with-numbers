@@ -11,7 +11,7 @@ export default class AnimationCanvas {
 	_height: number;
 	_canvas: HTMLCanvasElement;
 	_ctx: CanvasRenderingContext2D;
-	_animationIndex: number = 2;
+	_animationIndex: number = 0;
 	_animationFrameId: number = 0;
 	_lastFrameTime: number = 0;
 	_animationTime: number = 0;
