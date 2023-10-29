@@ -23,7 +23,7 @@ export const getRadialRainbowColor = ({ position, canvas }: Props) => {
 export const getLineaRainbowColor = ({ position, canvas }: Props) => {
 	const cycleSpeed = 0.05;
 	const completeRainbowInScreen = 2;
-	const gradient = (360 * (position.x - position.y)) / (canvas._width + canvas._height);
+	const gradient = (360 * (-position.x - position.y)) / (canvas._width + canvas._height);
 
 	const hue = gradient * completeRainbowInScreen + canvas._animationTime * cycleSpeed;
 	return `hsl(${hue}, 90%, 50%)`;

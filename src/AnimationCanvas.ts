@@ -1,16 +1,17 @@
 import { drawCircledPixels } from './Animations/CircledPixels';
 import { drawLineVectorField } from './Animations/LineVectorField';
+import { drawNewAnimation } from './Animations/NewAnimation';
 import Controls from './Controls';
 
 const defaultCellSize = 20;
 
-const animations = [drawLineVectorField, drawCircledPixels];
+const animations = [drawLineVectorField, drawCircledPixels, drawNewAnimation];
 export default class AnimationCanvas {
 	_width: number;
 	_height: number;
 	_canvas: HTMLCanvasElement;
 	_ctx: CanvasRenderingContext2D;
-	_animationIndex: number = 0;
+	_animationIndex: number = 2;
 	_animationFrameId: number = 0;
 	_lastFrameTime: number = 0;
 	_animationTime: number = 0;

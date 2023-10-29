@@ -15,7 +15,7 @@ export function drawCircledPixels(canvas: AnimationCanvas) {
 					canvas._ctx.strokeStyle = getRadialRainbowColor({ position: { x, y }, canvas });
 					break;
 				case 2:
-					canvas._ctx.strokeStyle = getLineaRainbowColor({ position: { x: canvas._width - x, y }, canvas });
+					canvas._ctx.strokeStyle = getLineaRainbowColor({ position: { x, y }, canvas });
 					break;
 			}
 
