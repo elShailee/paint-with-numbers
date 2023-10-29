@@ -1,10 +1,11 @@
 import { drawCircledPixels } from './Animations/CircledPixels';
 import { drawLineVectorField } from './Animations/LineVectorField';
+import { drawGalaxy } from './Animations/Galaxy';
 import Controls from './Controls';
 
 const defaultCellSize = 20;
 
-const animations = [drawLineVectorField, drawCircledPixels];
+const animations = [drawLineVectorField, drawCircledPixels, drawGalaxy];
 export default class AnimationCanvas {
 	_width: number;
 	_height: number;
@@ -123,11 +124,13 @@ export default class AnimationCanvas {
 
 	nextAnimation() {
 		this._animationIndex = (this._animationIndex + 1) % animations.length;
+		this._colorsCounter = 0;
 		this._drawFrame(0);
 	}
 
 	previousAnimation() {
 		this._animationIndex = (this._animationIndex - 1 + animations.length) % animations.length;
+		this._colorsCounter = 0;
 		this._drawFrame(0);
 	}
 
