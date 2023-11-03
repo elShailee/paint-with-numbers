@@ -7,44 +7,39 @@ const colors = {
 };
 
 export function drawMathGraph(canvas: AnimationCanvas) {
-	const centerX = canvas._width * 0.5;
-	const centerY = canvas._height * 0.5;
+	const { _ctx: ctx, _width: width, _height: height } = canvas;
+	const centerX = width * 0.5;
+	const centerY = height * 0.5;
 	const cellSize = canvas._cellSize * 2.5;
-	for (let x = cellSize; x < centerX; x += cellSize) {
-		canvas._ctx.strokeStyle = colors.light;
-		drawLine(canvas._ctx, { x: centerX + x, y: 0 }, { x: centerX + x, y: canvas._height });
-		drawLine(canvas._ctx, { x: centerX - x, y: 0 }, { x: centerX - x, y: canvas._height });
 
-		canvas._ctx.strokeStyle = colors.dark;
-		drawLine(
-			canvas._ctx,
-			{ x: centerX + x, y: centerY - cellSize * 0.25 },
-			{ x: centerX + x, y: centerY + cellSize * 0.25 },
-		);
-		drawLine(
-			canvas._ctx,
-			{ x: centerX - x, y: centerY - cellSize * 0.25 },
-			{ x: centerX - x, y: centerY + cellSize * 0.25 },
-		);
+	ctx.font = `italic ${cellSize * 0.3}px Georgia`;
+	ctx.textAlign = 'center';
+
+	for (let x = cellSize; x < centerX; x += cellSize) {
+		// draw vertical lines
+		ctx.strokeStyle = colors.light;
+		drawLine(ctx, { x: centerX + x, y: 0 }, { x: centerX + x, y: height });
+		drawLine(ctx, { x: centerX - x, y: 0 }, { x: centerX - x, y: height });
+
+		// draw x axis numbers
+		ctx.fillStyle = colors.dark;
+		const index = x / cellSize;
+		ctx.fillText(index.toString(), centerX + x - cellSize * 0.2, centerY + cellSize * 0.3);
+		ctx.fillText((-index).toString(), centerX - x + cellSize * 0.2, centerY + cellSize * 0.3);
 	}
 	for (let y = cellSize; y < centerY; y += cellSize) {
-		canvas._ctx.strokeStyle = colors.light;
-		drawLine(canvas._ctx, { x: 0, y: centerY + y }, { x: canvas._width, y: centerY + y });
-		drawLine(canvas._ctx, { x: 0, y: centerY - y }, { x: canvas._width, y: centerY - y });
+		// draw horizontal lines
+		ctx.strokeStyle = colors.light;
+		drawLine(ctx, { x: 0, y: centerY + y }, { x: width, y: centerY + y });
+		drawLine(ctx, { x: 0, y: centerY - y }, { x: width, y: centerY - y });
 
-		canvas._ctx.strokeStyle = colors.dark;
-		drawLine(
-			canvas._ctx,
-			{ x: centerX - cellSize * 0.25, y: centerY + y },
-			{ x: centerX + cellSize * 0.25, y: centerY + y },
-		);
-		drawLine(
-			canvas._ctx,
-			{ x: centerX - cellSize * 0.25, y: centerY - y },
-			{ x: centerX + cellSize * 0.25, y: centerY - y },
-		);
+		// draw y axis numbers
+		ctx.fillStyle = colors.dark;
+		const index = y / cellSize;
+		ctx.fillText(index.toString(), centerX - cellSize * 0.25, centerY + y + cellSize * 0.25);
+		ctx.fillText((-index).toString(), centerX - cellSize * 0.25, centerY - y + cellSize * 0.25);
 	}
-	canvas._ctx.strokeStyle = colors.dark;
-	drawLine(canvas._ctx, { x: 0, y: canvas._height / 2 }, { x: canvas._width, y: canvas._height / 2 });
-	drawLine(canvas._ctx, { x: canvas._width / 2, y: 0 }, { x: canvas._width / 2, y: canvas._height });
+	ctx.strokeStyle = colors.dark;
+	drawLine(ctx, { x: 0, y: centerY }, { x: width, y: centerY });
+	drawLine(ctx, { x: centerX, y: 0 }, { x: centerX, y: height });
 }
