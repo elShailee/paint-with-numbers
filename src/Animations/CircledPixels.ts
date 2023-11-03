@@ -1,6 +1,6 @@
 import AnimationCanvas from '../AnimationCanvas';
 import { getLineaRainbowColor, getRadialRainbowColor } from '../Utils/colors';
-import { drawCircle } from '../Utils/draw';
+import { drawCircleStroke } from '../Utils/draw';
 
 const { sin, cos, abs } = Math;
 
@@ -19,7 +19,7 @@ export function drawCircledPixels(canvas: AnimationCanvas) {
 					break;
 			}
 
-			drawCircle(
+			drawCircleStroke(
 				canvas._ctx,
 				{ x, y },
 

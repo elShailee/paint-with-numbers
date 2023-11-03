@@ -1,6 +1,6 @@
 import AnimationCanvas from '../AnimationCanvas';
 import { getGradientRainbowColor, getLineaRainbowColor, getRadialRainbowColor } from '../Utils/colors';
-import { Position, drawCircle } from '../Utils/draw';
+import { Position, drawCircleStroke } from '../Utils/draw';
 
 const { abs, sin, cos } = Math;
 
@@ -33,6 +33,6 @@ export function drawGalaxy(canvas: AnimationCanvas) {
 			position: pos,
 			canvas,
 		});
-		drawCircle(canvas._ctx, pos, abs(sin(cellTime * 1.4) * 10 + cos(cellTime * 0.5) * 10 + sin(cellTime * 0.2) * 10));
+		drawCircleStroke(canvas._ctx, pos, abs(sin(cellTime * 1.4) * 10 + cos(cellTime * 0.5) * 10 + sin(cellTime * 0.2) * 10));
 	}
 }
