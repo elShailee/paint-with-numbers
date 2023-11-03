@@ -1,7 +1,7 @@
 import { drawCircledPixels } from './Animations/CircledPixels';
 import { drawLineVectorField } from './Animations/LineVectorField';
 import { drawGalaxy } from './Animations/Galaxy';
-import { drawMathGraph } from './Animations/MathGraph';
+import { drawMathGraph } from './Animations/MathGraph/MathGraph';
 import Controls from './Controls';
 
 const defaultCellSize = 20;
