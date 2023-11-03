@@ -1,17 +1,18 @@
 import { drawCircledPixels } from './Animations/CircledPixels';
 import { drawLineVectorField } from './Animations/LineVectorField';
 import { drawGalaxy } from './Animations/Galaxy';
+import { drawMathGraph } from './Animations/MathGraph';
 import Controls from './Controls';
 
 const defaultCellSize = 20;
 
-const animations = [drawLineVectorField, drawCircledPixels, drawGalaxy];
+const animations = [drawLineVectorField, drawCircledPixels, drawGalaxy, drawMathGraph];
 export default class AnimationCanvas {
 	_width: number;
 	_height: number;
 	_canvas: HTMLCanvasElement;
 	_ctx: CanvasRenderingContext2D;
-	_animationIndex: number = 0;
+	_animationIndex: number = 3;
 	_animationFrameId: number = 0;
 	_lastFrameTime: number = 0;
 	_animationTime: number = 0;

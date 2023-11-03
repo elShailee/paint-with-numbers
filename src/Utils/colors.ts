@@ -45,6 +45,6 @@ export const getGradientRainbowColor = ({ val, scale, canvas }: GetGradientRainb
 	const completeRainbowInScreen = 2;
 	const gradient = (360 * val) / scale;
 
-	const hue = gradient * completeRainbowInScreen + canvas._animationTime * cycleSpeed;
+	const hue = gradient * completeRainbowInScreen - canvas._animationTime * cycleSpeed;
 	return `hsl(${hue}, 90%, 50%)`;
 };
