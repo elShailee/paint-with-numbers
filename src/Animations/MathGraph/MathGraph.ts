@@ -3,7 +3,7 @@ import { drawCircleFill, drawLine } from '../../Utils/draw';
 import { drawGridLines } from './drawGridLines';
 import { drawGridNumbers } from './drawGridNumbers';
 
-const { sin, cos } = Math;
+const { sin, cos, min, max } = Math;
 
 export const colors = {
 	light: 'rgba(0, 0, 0, 0.2)',
@@ -15,7 +15,7 @@ export function drawMathGraph(canvas: AnimationCanvas) {
 	const centerX = width * 0.5;
 	const centerY = height * 0.5;
 	const cellSize = canvas._cellSize * 4;
-	const animationTime = canvas._animationTime * 0.001;
+	const animationTime = canvas._animationTime * 0.0016;
 
 	ctx.font = `italic 18px Georgia`;
 	ctx.textAlign = 'right';
@@ -36,23 +36,19 @@ export function drawMathGraph(canvas: AnimationCanvas) {
 		ctx,
 	});
 
-	// rotating circle around the center
-	const distanceFromOrigin = cellSize * 3;
-	const angle = animationTime;
-	const x = centerX + distanceFromOrigin * cos(angle);
-	const y = centerY + distanceFromOrigin * sin(angle);
-	const radius = cellSize * 0.1;
-	drawCircleFill(ctx, { x, y }, radius);
+	const func = (x: number) => sin(x) * sin(x * animationTime * 0.5);
+	const func2 = (x: number) => cos(x) * cos(x * animationTime * 0.5);
+	const finalFunc = (x: number) => {
+		const a = 0.5 * (1 - sin(animationTime));
+		return func(x) * (1 - a) + func2(x) * a;
+	};
 
-	const func = (x: number) => sin(x) * sin(x * animationTime);
-
-	let resX = 0;
-	let resY = -func((0 - centerX) / cellSize) * cellSize + centerY;
-	while (resX < width)
-		for (let x = 0; x <= width; x++) {
-			const nextResY = -func((x + 1 - centerX) / cellSize) * cellSize + centerY;
-			drawLine(ctx, { x: resX, y: resY }, { x: resX + 1, y: nextResY });
-			resY = nextResY;
-			resX++;
-		}
+	let x = 0;
+	let y = -func((0 - centerX) / cellSize) * cellSize + centerY;
+	while (x < width) {
+		const nextResY = -finalFunc((x + 1 - centerX) / cellSize) * cellSize + centerY;
+		drawLine(ctx, { x: x, y: y }, { x: x + 1, y: nextResY });
+		y = nextResY;
+		x++;
+	}
 }
