@@ -1,9 +1,9 @@
 import AnimationCanvas from '../../AnimationCanvas';
-import { drawCircleFill, drawLine } from '../../Utils/draw';
+import { drawLine } from '../../Utils/draw';
 import { drawGridLines } from './drawGridLines';
 import { drawGridNumbers } from './drawGridNumbers';
 
-const { sin, cos, min, max } = Math;
+const { sin, cos } = Math;
 
 export const colors = {
 	light: 'rgba(0, 0, 0, 0.2)',
