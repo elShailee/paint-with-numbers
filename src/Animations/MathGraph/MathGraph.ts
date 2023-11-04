@@ -44,9 +44,10 @@ export function drawMathGraph(canvas: AnimationCanvas) {
 	};
 
 	let x = 0;
-	let y = -func((0 - centerX) / cellSize) * cellSize + centerY;
+	const scaleAdjustedFunc = (x: number) => -finalFunc((x - centerX) / cellSize) * cellSize + centerY;
+	let y = scaleAdjustedFunc(x);
 	while (x < width) {
-		const nextResY = -finalFunc((x + 1 - centerX) / cellSize) * cellSize + centerY;
+		const nextResY = scaleAdjustedFunc(x + 1);
 		drawLine(ctx, { x: x, y: y }, { x: x + 1, y: nextResY });
 		y = nextResY;
 		x++;
