@@ -1,7 +1,5 @@
 import { colors } from './MathGraph';
 
-const { round } = Math;
-
 type Props = {
 	cellSize: number;
 	centerX: number;
@@ -15,15 +13,25 @@ const yOffset = 19;
 export const drawGridNumbers = ({ cellSize, centerX, centerY, ctx }: Props) => {
 	ctx.fillStyle = colors.dark;
 
-	for (let y = cellSize; y < centerY; y += cellSize) {
-		const index = round(y / cellSize);
-		ctx.fillText(index.toString(), centerX + xOffset, centerY + y + yOffset);
-		ctx.fillText((-index).toString(), centerX + xOffset, centerY - y + yOffset);
+	let scaleFactor = 1;
+	let scaledCellSize = cellSize;
+	while (scaledCellSize >= 140) {
+		scaledCellSize *= 0.5;
+		scaleFactor *= 0.5;
 	}
-	for (let x = cellSize; x < centerX; x += cellSize) {
-		const index = round(x / cellSize);
-		ctx.fillText(index.toString(), centerX + x + xOffset, centerY + yOffset);
-		ctx.fillText((-index).toString(), centerX - x + xOffset, centerY + yOffset);
+	while (scaledCellSize < 60) {
+		scaledCellSize *= 2;
+		scaleFactor *= 2;
+	}
+	for (let x = 1; x * scaledCellSize < centerX; x++) {
+		const index = x * scaleFactor;
+		ctx.fillText(index.toString(), centerX + x * scaledCellSize + xOffset, centerY + yOffset);
+		ctx.fillText((-index).toString(), centerX - x * scaledCellSize + xOffset, centerY + yOffset);
+	}
+	for (let y = 1; y * scaledCellSize < centerY; y++) {
+		const index = y * scaleFactor;
+		ctx.fillText(index.toString(), centerX + xOffset, centerY + y * scaledCellSize + yOffset);
+		ctx.fillText((-index).toString(), centerX + xOffset, centerY - y * scaledCellSize + yOffset);
 	}
 	ctx.fillText('0', centerX + xOffset, centerY + yOffset);
 };

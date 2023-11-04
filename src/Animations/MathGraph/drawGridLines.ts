@@ -11,11 +11,19 @@ type Props = {
 };
 export const drawGridLines = ({ cellSize, centerX, centerY, ctx, width, height }: Props) => {
 	ctx.strokeStyle = colors.light;
-	for (let x = cellSize; x < centerX; x += cellSize) {
+
+	let scaledCellSize = cellSize;
+	while (scaledCellSize >= 140) {
+		scaledCellSize /= 2;
+	}
+	while (scaledCellSize < 60) {
+		scaledCellSize *= 2;
+	}
+	for (let x = scaledCellSize; x < centerX; x += scaledCellSize) {
 		drawLine(ctx, { x: centerX + x, y: 0 }, { x: centerX + x, y: height });
 		drawLine(ctx, { x: centerX - x, y: 0 }, { x: centerX - x, y: height });
 	}
-	for (let y = cellSize; y < centerY; y += cellSize) {
+	for (let y = scaledCellSize; y < centerY; y += scaledCellSize) {
 		drawLine(ctx, { x: 0, y: centerY + y }, { x: width, y: centerY + y });
 		drawLine(ctx, { x: 0, y: centerY - y }, { x: width, y: centerY - y });
 	}
